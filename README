@@ -1,0 +1,108 @@
+📸 Blur-Be-Gone: Image Culling Utility
+Blur-Be-Gone is a robust command-line tool written in Python designed to automatically scan directories (including subdirectories) and identify blurry images, moving them to a separate "cull" folder. It uses the reliable Laplacian Variance method for blur detection.
+
+Key Features
+Recursive Scanning: Processes all images in a given input directory and its subfolders.
+
+Laplacian Variance: Uses a mathematically rigorous algorithm to quantify image sharpness.
+
+Custom Threshold: Allows the user to adjust the blur sensitivity.
+
+Detailed Logging: Generates an optional CSV report with the sharpness score for every image scanned.
+
+Safe Culling: Blurry images are moved, not deleted, and their original directory structure is preserved in the output folder.
+
+💻 Installation
+Blur-Be-Gone requires Python and the OpenCV library (opencv-python).
+
+Install Python Dependencies:
+
+pip install opencv-python
+
+Save the Script:
+Save the provided code as a file named blur_be_gone.py.
+
+🚀 Usage
+The script is executed from the command line and requires a minimum of one argument: the input directory.
+
+python blur_be_gone.py -i <input_directory> [OPTIONS]
+
+Mandatory Argument
+Flag
+
+Full Name
+
+Description
+
+-i
+
+--input
+
+(REQUIRED) Path to the directory containing the images you want to scan.
+
+Optional Arguments
+Flag
+
+Full Name
+
+Default Value
+
+Description
+
+-t
+
+--threshold
+
+100.0
+
+The sharpness sensitivity score. Images with a score BELOW this value are considered blurry and will be moved.
+
+-o
+
+--output
+
+./culled_blurry/
+
+Path to the directory where the blurry images will be moved (culled). The script will create this directory if it doesn't exist.
+
+-l
+
+--log-file
+
+None
+
+Path to save a detailed CSV report of all scanned images, their scores, and the action taken.
+
+Examples
+1. Basic Scan with Default Settings
+
+Scan the folder ./my_photos/ and move blurry images (score < 100.0) into ./culled_blurry/.
+
+python blur_be_gone.py -i ./my_photos/
+
+2. Increasing Sensitivity and Custom Output
+
+Use a higher threshold of 150.0 (culling more images) and send them to a specific folder:
+
+python blur_be_gone.py -i /mnt/data/vacation_archive -t 150.0 -o /tmp/blurry_junk
+
+3. Generating a Detailed Log
+
+Run the scan and save a full report of every image's score to a CSV file:
+
+python blur_be_gone.py -i ./project_assets -l blur_report.csv
+
+🔍 Blur Detection Explained
+Blur-Be-Gone uses the Laplacian Variance algorithm, which is a standard method in computer vision for evaluating image focus.
+
+Grayscale Conversion: The image is first converted to grayscale.
+
+Laplacian Operator: A mathematical filter (the Laplacian) is applied. This operator detects sharp edges and details in the image. In a sharp image, the Laplacian output will show high contrast around edges.
+
+Variance Calculation: The variance (spread) of the values in the Laplacian output is calculated.
+
+Sharp Image: High variance (high scores, e.g., >150.0) indicates many sharp details and edges.
+
+Blurry Image: Low variance (low scores, e.g., <50.0) indicates few or smeared details.
+
+The --threshold value determines the cutoff point for this variance score.
